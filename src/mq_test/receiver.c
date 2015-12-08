@@ -73,23 +73,23 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 int open_message_queue(int index){
-		mqd_t msgq_id;
-		struct mq_attr msgq_attr = {0};
-		char MQNAME[50] = {0};
+	mqd_t msgq_id;
+	struct mq_attr msgq_attr = {0};
+	char MQNAME[50] = {0};
 
-		sprintf(MQNAME, "%s%d", MSGQOBJ_NAME, index);
-		printf("mq_name : %s\n", MQNAME);
+	sprintf(MQNAME, "%s%d", MSGQOBJ_NAME, index);
+	printf("mq_name : %s\n", MQNAME);
 
-		/* opening the queue        --  mq_open() */
-		msgq_id = mq_open(MQNAME, PERMS);
+	/* opening the queue        --  mq_open() */
+	msgq_id = mq_open(MQNAME, PERMS);
 
-		if (msgq_id == (mqd_t)-1) {
-		    perror("In mq_open()");
-		    exit(1);
-		}
+	if (msgq_id == (mqd_t)-1) {
+	    perror("In mq_open()");
+	    exit(1);
+	}
 
-		mq_getattr(msgq_id, &msgq_attr);
-		printf("Queue \"%s\":\n\t- stores at most %ld messages\n\t- large at most %ld bytes each\n\t- currently holds %ld messages\n", MQNAME, msgq_attr.mq_maxmsg, msgq_attr.mq_msgsize, msgq_attr.mq_curmsgs);
+	mq_getattr(msgq_id, &msgq_attr);
+	printf("Queue \"%s\":\n\t- stores at most %ld messages\n\t- large at most %ld bytes each\n\t- currently holds %ld messages\n", MQNAME, msgq_attr.mq_maxmsg, msgq_attr.mq_msgsize, msgq_attr.mq_curmsgs);
 
-		return msgq_id;
+	return msgq_id;
 }

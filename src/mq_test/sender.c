@@ -88,32 +88,32 @@ int main(int argc, char *argv[]) {
 }
 
 int open_message_queue(int msgsize, int index){
-		struct mq_attr msgq_attr = {0};
-		mqd_t msgq_id;
-		char MQNAME[1024] = {0};
+	struct mq_attr msgq_attr = {0};
+	mqd_t msgq_id;
+	char MQNAME[1024] = {0};
 
-		msgq_attr.mq_flags = 0;
-		msgq_attr.mq_maxmsg = 10; //?
-		msgq_attr.mq_msgsize = msgsize;
-		msgq_attr.mq_curmsgs = 0;
+	msgq_attr.mq_flags = 0;
+	msgq_attr.mq_maxmsg = 10; //?
+	msgq_attr.mq_msgsize = msgsize;
+	msgq_attr.mq_curmsgs = 0;
 
-		sprintf(MQNAME, "%s%d", MSGQOBJ_NAME, index);
-		printf("mq_name : %s\n", MQNAME);
+	sprintf(MQNAME, "%s%d", MSGQOBJ_NAME, index);
+	printf("mq_name : %s\n", MQNAME);
 
-		mq_unlink(MQNAME);
+	mq_unlink(MQNAME);
 
-		/* Create Queue */
-		msgq_id = mq_open(MQNAME, PERMS, MODES, &msgq_attr);
+	/* Create Queue */
+	msgq_id = mq_open(MQNAME, PERMS, MODES, &msgq_attr);
 
-		// If mq exist, try to open
-		if( msgq_id == ((mqd_t) -1 ) && (errno == EEXIST) ){
-			//msgq_id = mq_open(MQNAME, O_WRONLY, &msgq_attr);
-		}
+	// If mq exist, try to open
+	if( msgq_id == ((mqd_t) -1 ) && (errno == EEXIST) ){
+		//msgq_id = mq_open(MQNAME, O_WRONLY, &msgq_attr);
+	}
 
-		if (msgq_id == (mqd_t)-1) {
-		    perror("In mq_open()");
-		    exit(1);
-		}
+	if (msgq_id == (mqd_t)-1) {
+	    perror("In mq_open()");
+	    exit(1);
+	}
 
-		return msgq_id;
+	return msgq_id;
 }
