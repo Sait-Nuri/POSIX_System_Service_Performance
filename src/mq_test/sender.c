@@ -10,14 +10,13 @@
  *  Original source file available on http://mij.oltrelinux.com/devel/unixprg/
  *
  */
-
-#include <stdio.h>  /* mq_* functions */
-#include <mqueue.h> /* exit() */
-#include <stdlib.h> /* getopt() */
-#include <unistd.h> /* ctime() and time() */
-#include <time.h>   /* strlen() */
-#include <string.h> /* errno */
-#include <errno.h>  /* perror() */
+#include <stdio.h>   /* printf() sprintf() */
+#include <mqueue.h>  /* mq_* functions */
+#include <stdlib.h>  /* exit() */
+#include <unistd.h>  /* getopt() */
+#include <time.h>    /* ctime() and time() */
+#include <string.h>  /* strlen() */
+#include <errno.h>   /* errno perror() */
 #include "test_params.h" /* NUM_OF_MSG, SIZE_OF_MSG */
 
 /* max length of a message (just for this process) */
@@ -89,32 +88,32 @@ int main(int argc, char *argv[]) {
 }
 
 int open_message_queue(int msgsize, int index){
-	struct mq_attr msgq_attr = {0};
-	mqd_t msgq_id;
-	char MQNAME[1024] = {0};
+		struct mq_attr msgq_attr = {0};
+		mqd_t msgq_id;
+		char MQNAME[1024] = {0};
 
-	msgq_attr.mq_flags = 0;
-    msgq_attr.mq_maxmsg = 10; //?
-    msgq_attr.mq_msgsize = msgsize;
-    msgq_attr.mq_curmsgs = 0;
+		msgq_attr.mq_flags = 0;
+		msgq_attr.mq_maxmsg = 10; //?
+		msgq_attr.mq_msgsize = msgsize;
+		msgq_attr.mq_curmsgs = 0;
 
-    sprintf(MQNAME, "%s%d", MSGQOBJ_NAME, index);
-    printf("mq_name : %s\n", MQNAME);
+		sprintf(MQNAME, "%s%d", MSGQOBJ_NAME, index);
+		printf("mq_name : %s\n", MQNAME);
 
-    mq_unlink(MQNAME);
+		mq_unlink(MQNAME);
 
-    /* Create Queue */
-    msgq_id = mq_open(MQNAME, PERMS, MODES, &msgq_attr);
+		/* Create Queue */
+		msgq_id = mq_open(MQNAME, PERMS, MODES, &msgq_attr);
 
-    // If mq exist, try to open
-    if( msgq_id == ((mqd_t) -1 ) && (errno == EEXIST) ){
-    	//msgq_id = mq_open(MQNAME, O_WRONLY, &msgq_attr);
-    }
+		// If mq exist, try to open
+		if( msgq_id == ((mqd_t) -1 ) && (errno == EEXIST) ){
+			//msgq_id = mq_open(MQNAME, O_WRONLY, &msgq_attr);
+		}
 
-    if (msgq_id == (mqd_t)-1) {
-        perror("In mq_open()");
-        exit(1);
-    }
+		if (msgq_id == (mqd_t)-1) {
+		    perror("In mq_open()");
+		    exit(1);
+		}
 
-    return msgq_id;
+		return msgq_id;
 }

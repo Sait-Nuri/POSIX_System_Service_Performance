@@ -1,17 +1,20 @@
 SOURCE = sender.c receiver.c
-EXE = sender receiver
 CFLAGS = -Wall 
 LIBS = -lrt
 OBJS = sender.o receiver.o
 CC = gcc
+OUT_DIR := build/mq_test
+EXE = sender receiver
 
 all: $(EXE)
 
-sender: sender.o
+sender: sender.o 
 	$(CC) sender.o -o sender $(LIBS)
+	mv sender ../../$(OUT_DIR)/sender
 
-receiver: receiver.o
+receiver: receiver.o 
 	$(CC) receiver.o -o receiver $(LIBS)
+	mv receiver ../../$(OUT_DIR)/receiver
 
 sender.o: sender.c
 	$(CC) $(CFLAGS) -c sender.c
