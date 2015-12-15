@@ -18,7 +18,7 @@ int main()
     int fd;
     char buf[MAX_BUF];
     struct timespec requestStart, requestEnd;
-    double accum;
+    unsigned long long accum = 0, result;
     int i, j, k;
     int MSG_COUNT_PER_TEST = (int)sizeof(NUM_OF_MSG)/sizeof(int);
     int MSG_SIZE_PER_TEST = (int)sizeof(SIZE_OF_MSG)/sizeof(int);
@@ -47,16 +47,19 @@ int main()
             // Get the ending time of test
             clock_gettime(CLOCK_REALTIME, &requestEnd);
 
-            accum = ( requestEnd.tv_sec - requestStart.tv_sec ) 
+            result = ( requestEnd.tv_sec - requestStart.tv_sec ) 
             + ( requestEnd.tv_nsec - requestStart.tv_nsec ) / BILLION;
 
             printf("Test %d is finished.\n", j+1);
-            printf( "Elapsed time: %.8lf sec. \n", accum );
-            printf("Avarage time: %.8lf sec. \n", accum/NUM_OF_MSG[j]);
-            printf("**********************************************************************\n\n\n");
+            printf( "Elapsed time: %llu nanosec. \n", result );
+            
             sleep(1);
         }
 
+        printf("Avarage time: %llu nanosec. \n", accum/NUM_OF_MSG[j]);
+        printf("**********************************************************************\n\n\n");
+
+        accum = 0;
         sleep(2);
     }
 
