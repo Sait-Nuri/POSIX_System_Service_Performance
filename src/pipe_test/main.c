@@ -26,7 +26,7 @@ int main()
             exit(1);
     }
 
-	if(childpid == 0)
+    if(childpid == 0)
     {
             /* Child process closes up input side of pipe */
             close(fd[0]);
@@ -51,9 +51,9 @@ int main()
 
 int writer(int fd){
 
-	char buf[MAX_BUF];
+    char buf[MAX_BUF];
     struct timespec requestStart, requestEnd;
-    double accum;
+    unsigned long long accum = 0, result;
     int i, j, k;
     int MSG_COUNT_PER_TEST = (int)sizeof(NUM_OF_MSG)/sizeof(int);
     int MSG_SIZE_PER_TEST = (int)sizeof(SIZE_OF_MSG)/sizeof(int);
@@ -64,35 +64,38 @@ int writer(int fd){
         memset(buf, 'x', SIZE_OF_MSG[k]);
 
         /* Write buffer to named pipe */
-        write(fd, buf, MAX_BUF);
-        
+        write(fd, buf, SIZE_OF_MSG[k]);
+
         for (j = 0; j < MSG_COUNT_PER_TEST; ++j)
-        {     
-            printf("**********************************************************************\n");
-            printf("Writer Test %d is starting... [Number of messages:%d] [Size of a message:%d]\n", j+1, NUM_OF_MSG[j], SIZE_OF_MSG[k]);
-            //printf("File descriptor: %d\n", fd);
+        {
+            printf("**********************************************************************\n\r");
+            printf("Writer Test %d is starting... [Number of messages:%d] [Size of a message:%d]\n\r", j+1, NUM_OF_MSG[j], SIZE_OF_MSG[k]);
+            //printf("File descriptor: %d\n\r", fd);
 
             // Get initial time of test
             clock_gettime(CLOCK_REALTIME, &requestStart);
 
             for ( i = 0; i < NUM_OF_MSG[j]; ++i){
-                write(fd, buf, MAX_BUF);
+                write(fd, buf, SIZE_OF_MSG[k]);
             }
 
             // Get the ending time of test
             clock_gettime(CLOCK_REALTIME, &requestEnd);
 
-            accum = ( requestEnd.tv_sec - requestStart.tv_sec ) 
+            result = ( requestEnd.tv_sec - requestStart.tv_sec )
             + ( requestEnd.tv_nsec - requestStart.tv_nsec ) / BILLION;
 
-            printf("Writer Test %d is finished.\n", j+1);
-            printf("Writer Elapsed time: %.8lf sec. \n", accum );
-            printf("Writer Avarage time: %.8lf sec. \n", accum/NUM_OF_MSG[j]);
-            printf("**********************************************************************\n\n\n");
+            accum += result;
+
+            printf("Writer Test %d is finished.\n\r", j+1);
+            printf("Writer Elapsed time: %llu nanosec. \n\r", result );
             sleep(1);
         }
-        
-         sleep(2);
+
+        printf("Writer Avarage time: %llu nanosec. \n\r", accum/NUM_OF_MSG[j]);
+        printf("**********************************************************************\n\r\n\r\n\r");
+        accum = 0;
+        sleep(1);
     }
 
     /* close the FIFO */
@@ -102,9 +105,9 @@ int writer(int fd){
 }
 
 int reader(int fd){
-	char buf[MAX_BUF];
+    char buf[MAX_BUF];
     struct timespec requestStart, requestEnd;
-    double accum;
+    unsigned long long accum = 0, result;
     int i, j, k;
     int MSG_COUNT_PER_TEST = (int)sizeof(NUM_OF_MSG)/sizeof(int);
     int MSG_SIZE_PER_TEST = (int)sizeof(SIZE_OF_MSG)/sizeof(int);
@@ -113,35 +116,38 @@ int reader(int fd){
     for (k = 0; k < MSG_SIZE_PER_TEST; ++k){
 
         /* Read incoming data with buffer */
-        read(fd, buf, SIZE_OF_MSG[k]+1);
+        read(fd, buf, SIZE_OF_MSG[k]);
 
         for (j = 0; j < MSG_COUNT_PER_TEST; ++j){
 
-        	printf("**********************************************************************\n");
-	    	printf("Reader Test %d is starting... [Number of messages:%d] [Size of a message:%d]\n", j+1, NUM_OF_MSG[j], SIZE_OF_MSG[k]);
-	    	//printf("File descriptor: %d\n", fd);
+            printf("**********************************************************************\n\r");
+            printf("Reader Test %d is starting... [Number of messages:%d] [Size of a message:%d]\n\r", j+1, NUM_OF_MSG[j], SIZE_OF_MSG[k]);
+            //printf("File descriptor: %d\n\r", fd);
 
-	    	// Get initial time of test
+            // Get initial time of test
             clock_gettime(CLOCK_REALTIME, &requestStart);
 
             for ( i = 0; i < NUM_OF_MSG[j]; ++i){
-                read(fd, buf, MAX_BUF);
+                read(fd, buf, SIZE_OF_MSG[k]);
             }
 
             // Get the ending time of test
             clock_gettime(CLOCK_REALTIME, &requestEnd);
 
-            accum = ( requestEnd.tv_sec - requestStart.tv_sec ) 
+            result = ( requestEnd.tv_sec - requestStart.tv_sec )
             + ( requestEnd.tv_nsec - requestStart.tv_nsec ) / BILLION;
 
-            printf("Reader Test %d is finished.\n", j+1);
-            printf("Reader Elapsed time: %.8lf sec. \n", accum );
-            printf("Reader Avarage time: %.8lf sec. \n", accum/NUM_OF_MSG[j]);
-            printf("**********************************************************************\n\n\n");
+            accum += result;
+
+            printf("Reader Test %d is finished.\n\r", j+1);
+            printf("Reader Elapsed time: %llu nanosec. \n\r", result );
+
             sleep(1);
         }
 
-        sleep(2);
+        printf("Reader Avarage time: %llu nanosec. \n\r", accum/NUM_OF_MSG[j]);
+        printf("**********************************************************************\n\r\n\r\n\r");
+        sleep(1);
     }
 
     /* close the FIFO */
