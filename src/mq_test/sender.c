@@ -10,13 +10,13 @@
  *  Original source file available on http://mij.oltrelinux.com/devel/unixprg/
  *
  */
-#include <stdio.h>   /* printf() sprintf() */
-#include <mqueue.h>  /* mq_* functions */
-#include <stdlib.h>  /* exit() */
-#include <unistd.h>  /* getopt() */
-#include <time.h>    /* ctime() and time() */
-#include <string.h>  /* strlen() */
-#include <errno.h>   /* errno perror() */
+#include <stdio.h>   	 /* printf() sprintf() */
+#include <mqueue.h>  	 /* mq_* functions */
+#include <stdlib.h>  	 /* exit() */
+#include <unistd.h>  	 /* getopt() */
+#include <time.h>    	 /* ctime() and time() */
+#include <string.h>  	 /* strlen() */
+#include <errno.h>   	 /* errno perror() */
 #include "test_params.h" /* NUM_OF_MSG, SIZE_OF_MSG */
 
 /* max length of a message (just for this process) */
