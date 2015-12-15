@@ -12,3 +12,5 @@
 4-) Pthread: Threads that amount of certain number specified in definition, are created. The time duration for each thread creation via pthread_create() and avarage time of these operations are measured and calculated. 
 
 5-) Memory Allocation and Freeing: A process allocates some memory amount of 1, 16, 64, 256 etc. increasingly and freeing it. All these two operation time measured and avarage time calculated
+
+6-) Shared Memory: A process allocates shared increasingly memory amount of 1, 16, 64,  256, 1024 and so forth,  through virtual file name. Allocation and de-allocation are measured and avarage time is calculated.
