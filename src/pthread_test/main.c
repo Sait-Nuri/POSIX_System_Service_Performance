@@ -3,7 +3,7 @@
 #include <time.h>        /* clock_gettime() */
 #include <errno.h>       /* errno, perror() */
 #include <pthread.h>     /* pthread_create() */
-#include <unistd.h>          /* sleep() */
+#include <unistd.h>      /* sleep() */
 
 #define MAX_THREAD 10
 #define BILLION 1000000000
@@ -17,7 +17,7 @@ int main()
     int i;
     pthread_t threads[MAX_THREAD];
     struct timespec requestStart, requestEnd;
-    unsigned long long accum;
+    unsigned long long result, accum = 0;
 
     for(i = 0; i < MAX_THREAD; ++i){
 
@@ -36,10 +36,12 @@ int main()
         // Get the ending time of test
         clock_gettime(CLOCK_REALTIME, &requestEnd);
 
-        accum = (( requestEnd.tv_sec - requestStart.tv_sec ) * BILLION)
+        result = (( requestEnd.tv_sec - requestStart.tv_sec ) * BILLION)
             + ( requestEnd.tv_nsec - requestStart.tv_nsec ) ;
 
-        printf( "Pthread_create() elapsed time: %llu nanosec. \n\r", accum );
+        accum += result;
+
+        printf( "Pthread_create() elapsed time: %llu nanosec. \n\r", result );
         printf("**********************************************************************\n\r");
         sleep(1);
     }
