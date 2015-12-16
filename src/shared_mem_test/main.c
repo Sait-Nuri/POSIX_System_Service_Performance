@@ -6,6 +6,7 @@
 #include <sys/mman.h>    /* shm_* stuff, and mmap() */
 #include <fcntl.h>       /* O_CREAT | O_EXCL | O_RDWR */
 #include <sys/stat.h>    /* S_IRWXU | S_IRWXG */
+#include <string.h>      /* memset() */
 #include "test_params.h" /* SH_MEM_PATH, SIZE_OF_MEM[] */
 
 #define PERMS S_IRWXU | S_IRWXG
@@ -15,7 +16,7 @@
 #define MILLION 1000000
 #define THOUSAND 1000
 
-int main()
+int main(int argc, char const *argv[])
 {
     int i;
     int fd;
@@ -56,6 +57,12 @@ int main()
 
         printf("Shared memory allocation elapsed time: %llu nanosec. \n\r", result1 );
         
+        memset(sh_mem, 0, SIZE_OF_MEM[i]);
+
+        sh_mem[0] = 1;
+
+        // Wait for that client open the shared memory
+        while(sh_mem[0]){}        
 
         // Get initial time of test
         clock_gettime(CLOCK_REALTIME, &start2);
