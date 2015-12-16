@@ -6,7 +6,7 @@ CC = gcc
 OUT_DIR := ../../build/pipe_test
 EXE = pipe_test
 
-all: $(EXE) file
+all: file $(EXE) 
 
 file:
 	mkdir -p $(OUT_DIR)

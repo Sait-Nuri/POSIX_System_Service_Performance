@@ -6,13 +6,13 @@ CC = gcc
 OUT_DIR := ../../build/fifo_test
 EXE = fifo_writer fifo_reader
 
-all: $(EXE) file
+all: file $(EXE) 
 
 file:
 	mkdir -p $(OUT_DIR)
 
 fifo_writer: writer.o 
-	$(CC) writer.o -o writer $(LIBS)
+	$(CC) writer.o -o fifo_writer $(LIBS)
 	mv fifo_writer $(OUT_DIR)/fifo_writer
 
 fifo_reader: reader.o 
