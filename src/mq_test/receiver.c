@@ -1,15 +1,3 @@
-/*
- *  takeone.c
- *  
- *  simply request a message from a queue, and displays queue
- *  attributes.
- *
- *
- *  Created by Mij <mij@bitchx.it> on 07/08/05.
- *  Original source file available on http://mij.oltrelinux.com/devel/unixprg/
- *
- */
-
 #include <stdio.h>   /* printf() sprintf() */
 #include <mqueue.h>  /* mq_* functions */
 #include <stdlib.h>  /* exit() */

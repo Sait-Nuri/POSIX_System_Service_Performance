@@ -1,15 +1,3 @@
-/*
- *  dropone.c
- *  
- *  drops a message into a #defined queue, creating it if user
- *  requested. The message is associated a priority still user
- *  defined
- *
- *
- *  Created by Mij <mij@bitchx.it> on 07/08/05.
- *  Original source file available on http://mij.oltrelinux.com/devel/unixprg/
- *
- */
 #include <stdio.h>   	 /* printf() sprintf() */
 #include <mqueue.h>  	 /* mq_* functions */
 #include <stdlib.h>  	 /* exit() */
