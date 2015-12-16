@@ -6,7 +6,6 @@
 
 #include <stdio.h>   	  /* printf() sprintf() */
 #include <sched.h>   	  /* sched_yield() */
-#include "test_params.h"  /* NUM_OF_MSG, SIZE_OF_MSG */
 #include <time.h>         /* clock_getstime() */
 
 #define BILLION 1000000000
